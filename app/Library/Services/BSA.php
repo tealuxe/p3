@@ -18,6 +18,11 @@ class BSA
         return ($squaremeters * 10.7639);
     }
 
+    public function squareMetersToBasketballs($squaremeters)
+    {
+        return ($squaremeters / 0.1787151264);
+    }
+
     // BSA [m2] (male) = Weight [kg]0.38 x Height [cm]1.24 x 0.000579479
     // BSA [m2] (female) = Weight [kg]0.46 x Height [cm]1.08 x 0.000975482
     // http://www.bmi-calculator.net/bsa-calculator/

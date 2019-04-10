@@ -49,7 +49,7 @@ class CalculateController extends Controller
             'pounds' => $pounds,
             'feet' => $feet,
             'inches' => $inches,
-            'basketballs' => $bsa / 0.1787151264
+            'basketballs' => $bsaServiceInstance->squareMetersToBasketballs($bsa)
         ]);
     }
 }
