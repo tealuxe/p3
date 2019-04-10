@@ -22,7 +22,7 @@
            settings, where it can offer a better indication of the body's requirement for energy than weight itself.
         </p>
     </div>
-    <form method='POST' action='/calculate'>
+    <form method='GET' action='/calculate'>
         {{ csrf_field() }}
         <div class="row">
             <div class="five columns">

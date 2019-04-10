@@ -13,4 +13,4 @@
 
 Route::get('/', 'CalculateController@main');
 
-Route::post('/calculate', 'CalculateController@calculate');
+Route::get('/calculate', 'CalculateController@calculate');
