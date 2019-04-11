@@ -11,7 +11,7 @@ class CalculateController extends Controller
 {
     public function main(Request $request)
     {
-        return view('main')->with([
+        return view('welcome')->with([
             'bsa' => $request->session()->get('bsa'),
             'bsaSquareFeet' => $request->session()->get('bsaSquareFeet'),
             'basketballs' => $request->session()->get('basketballs'),

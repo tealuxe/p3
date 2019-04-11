@@ -1,99 +1,197 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.master')
 
-    <title>Laravel</title>
+@section('content')
+<div class="container">
+    <div class="row">
+        <h1>Body Surface Area Calculator</h1>
+        <p>Greetings! This is a body surface area calculator based on the Schlich formula (a gender-based formula among
+            <a href='http://www.bmi-calculator.net/bsa-calculator/'>a variety of formulas used</a>). Enter your gender, weight,
+           and height, and we will calculate your estimated body surface area. Body surface area (BSA) can be useful in medical
+           settings, where it can offer a better indication of the body's requirement for energy than weight itself.
+        </p>
+    </div>
+    <form method='GET' action='/calculate'>
+        {{ csrf_field() }}
+        <div class="row">
+            <div class="five columns">
+                <div class="right">
+                    <label for="genderInput">Gender *</label>
+                </div>
+            </div>
+            <div class="seven columns">
+                <input type='radio'
+                       id='genderInput'
+                       name='genderInput'
+                       value='Male'
+                       @if (old('genderInput', $gender) == "Male")
+                       checked
+                        @endif
+                > Male
+                <input type='radio'
+                       name='genderInput'
+                       value='Female'
+                       @if (old('genderInput', $gender) == "Female")
+                       checked
+                        @endif
+                > Female
+            </div>
+        </div>
+        <div class="row">
+            <div class="five columns">
+                <div class="right">
+                    <label for="weightInput">Body Weight *</label>
+                </div>
+            </div>
+            <div class="seven columns">
+                <input type="number"
+                       id='weightInput'
+                       name="weightInput"
+                       value='{{ old('weightInput', $pounds) }}'
+                       min="0"> Pounds
+            </div>
+        </div>
+        <div class="row">
+            <div class="five columns">
+                <div class="right">
+                    <label for="heightFeet">Height *</label>
+                </div>
+            </div>
+            <div class="seven columns">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+                <select id='heightFeet' name='heightFeet'>
+                    <option value='0'
+                            @if (old('heightFeet', $feet) == "0")
+                            selected
+                            @endif >0
+                    </option>
+                    <option value='1'
+                            @if (old('heightFeet', $feet) == "1")
+                            selected
+                            @endif >1
+                    </option>
+                    <option value='2'
+                            @if (old('heightFeet', $feet) == "2")
+                            selected
+                            @endif >2
+                    </option>
+                    <option value='3'
+                            @if (old('heightFeet', $feet) == "3")
+                            selected
+                            @endif >3
+                    </option>
+                    <option value='4'
+                            @if (old('heightFeet', $feet) == "4")
+                            selected
+                            @endif >4
+                    </option>
+                    <option value='5'
+                            @if (old('heightFeet', $feet) == "5")
+                            selected
+                            @endif >5
+                    </option>
+                    <option value='6'
+                            @if (old('heightFeet', $feet) == "6")
+                            selected
+                            @endif >6
+                    </option>
+                    <option value='7'
+                            @if (old('heightFeet', $feet) == "7")
+                            selected
+                            @endif >7
+                    </option>
+                </select>
+                Feet
+                <select id='heightInches' name='heightInches'>
+                    <option value='0'
+                            @if (old('heightInches', $inches) == "0")
+                            selected
+                            @endif >0
+                    </option>
+                    <option value='1'
+                            @if (old('heightInches', $inches) == "1")
+                            selected
+                            @endif >1
+                    </option>
+                    <option value='2'
+                            @if (old('heightInches', $inches) == "2")
+                            selected
+                            @endif >2
+                    </option>
+                    <option value='3'
+                            @if (old('heightInches', $inches) == "3")
+                            selected
+                            @endif >3
+                    </option>
+                    <option value='4'
+                            @if (old('heightInches', $inches) == "4")
+                            selected
+                            @endif >4
+                    </option>
+                    <option value='5'
+                            @if (old('heightInches', $inches) == "5")
+                            selected
+                            @endif >5
+                    </option>
+                    <option value='6'
+                            @if (old('heightInches', $inches) == "6")
+                            selected
+                            @endif > 6
+                    </option>
+                    <option value='7'
+                            @if (old('heightInches', $inches) == "7")
+                            selected
+                            @endif >7
+                    </option>
+                    <option value='8'
+                            @if (old('heightInches', $inches) == "8")
+                            selected
+                            @endif >8
+                    </option>
+                    <option value='9'
+                            @if (old('heightInches', $inches) == "9")
+                            selected
+                            @endif >9
+                    </option>
+                    <option value='10'
+                            @if (old('heightInches', $inches) == "10")
+                            selected
+                            @endif >10
+                    </option>
+                    <option value='11'
+                            @if (old('heightInches', $inches) == "11")
+                            selected
+                            @endif >11
+                    </option>
+                </select>
+                Inches
+            </div>
+        </div>
+        <div class="center">
+            <br/>
+            <input class="button-primary" type="submit" value="Calculate">
+            <p>* All fields are required.</p>
+        </div>
+    </form>
 
-    <!-- Styles -->
-    <style>
-        html, body {
-            background-color: #fff;
-            color: #636b6f;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 200;
-            height: 100vh;
-            margin: 0;
-        }
+    @if($bsa && count($errors) < 1)
+        <div class="result">
+            Your estimated body surface area is: {{ round($bsa, 2) }} square meters and {{ round($bsaSquareFeet, 2) }} square feet.
+            That is equal to the area of {{ round($basketballs, 2) }} NBA regulation basketballs.
+            <br/>
+            <br/>
+        </div>
+        <br/>
+    @endif
 
-        .full-height {
-            height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-        .position-ref {
-            position: relative;
-        }
-
-        .top-right {
-            position: absolute;
-            right: 10px;
-            top: 18px;
-        }
-
-        .content {
-            text-align: center;
-        }
-
-        .title {
-            font-size: 84px;
-        }
-
-        .links > a {
-            color: #636b6f;
-            padding: 0 25px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-
-        .m-b-md {
-            margin-bottom: 30px;
-        }
-    </style>
-</head>
-<body>
-<div class="flex-center position-ref full-height">
-    @if (Route::has('login'))
-        <div class="top-right links">
-            @auth
-                <a href="{{ url('/home') }}">Home</a>
-            @else
-                <a href="{{ route('login') }}">Login</a>
-
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}">Register</a>
-                @endif
-            @endauth
+    @if(count($errors) > 0)
+        <div class='alert'>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
-    <div class="content">
-        <div class="title m-b-md">
-            Laravel
-        </div>
-
-        <div class="links">
-            <a href="https://laravel.com/docs">Docs</a>
-            <a href="https://laracasts.com">Laracasts</a>
-            <a href="https://laravel-news.com">News</a>
-            <a href="https://blog.laravel.com">Blog</a>
-            <a href="https://nova.laravel.com">Nova</a>
-            <a href="https://forge.laravel.com">Forge</a>
-            <a href="https://github.com/laravel/laravel">GitHub</a>
-        </div>
-    </div>
 </div>
-</body>
-</html>
+@endsection
