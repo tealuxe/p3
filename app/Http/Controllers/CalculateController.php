@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Library\Services\BSA;
 
-// for old data: https://stackoverflow.com/questions/38461677/what-is-the-best-practice-to-show-old-value-when-editing-a-form-in-laravel
-
 class CalculateController extends Controller
 {
     public function main(Request $request)
