@@ -1,6 +1,6 @@
 ## P3 Peer Review
 
-+ Reviewer's name: Patrick Q.
++ Reviewer's name: Gary H.
 + Reviwee's name: Ram R.
 + URL to Reviewe's P3 Github Repo URL: http://p3.ramarolahy.me
 
